@@ -1,0 +1,765 @@
+// ==========================================
+// 1. VARIABLES & CONFIGURACIÓN
+// ==========================================
+// El HTML ya carga Poppins desde Google Fonts, así que se usa aquí.
+$font-family: 'Poppins', sans-serif;
+
+// Colores tomados de la captura (cuentagotas)
+$primary-color: #38539a;   // botones, links y título del CTA
+$hero-title: #3f5da9;      // título del hero
+$hero-text: #4460ab;       // párrafo del hero
+$cta-text: #465fa1;        // subtítulo del CTA
+$hero-bg: #f1f2ff;         // fondo lavanda (hero y CTA)
+$blob-color: #e5fdff;      // mancha celeste (está en el fill del SVG)
+$hero-btn-hover: #2b4178;
+$text-dark: #2c2c2c;       // títulos
+$text-body: #3a3a3a;       // párrafos
+$text-muted: #555555;      // textos pequeños del footer
+$text-light: #666666;      // barra superior (antes se usaba sin declararla)
+$placeholder: #999999;
+$icon-gray: #8c8c8c;       // íconos del footer
+$border-color: #e5e5e5;
+$white: #ffffff;
+
+// Medidas (la captura equivale a una pantalla de 1440 px de ancho)
+$container: 1440px;
+$page-gutter: 52px;        // margen lateral del hero
+
+// Breakpoints para Media Queries
+$breakpoint-mobile: 768px;
+$breakpoint-tablet: 1024px;
+$breakpoint-wide: 1441px;  // pantallas más anchas que la captura
+
+// Flechita ▾ de los <select> (un SVG pequeño dentro de la URL)
+$caret-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='4' viewBox='0 0 7 4'%3E%3Cpath d='M0 0h7L3.5 4z' fill='%23666666'/%3E%3C/svg%3E");
+
+// ==========================================
+// 2. MIXINS
+// ==========================================
+@mixin flex-center($direction: row, $justify: center, $align: center) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+// Ícono "solid" de FontAwesome dibujado solo con su contorno
+@mixin outline-icon($color, $stroke: 1.5px) {
+    color: transparent;
+    -webkit-text-stroke: $stroke $color;
+}
+
+// ==========================================
+// 3. RESETEO Y ESTILOS BASE
+// ==========================================
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: $font-family;
+    color: $text-dark;
+    line-height: 1.5;
+    background-color: $white;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+img {
+    display: block;
+}
+
+// ==========================================
+// 4. HEADER (Flexbox)
+// ==========================================
+.site-header {
+    // --- Barra superior ---
+    .top-bar {
+        @include flex-center(row, space-between, center);
+        height: 33px;
+        padding: 1px 46px 0 50px;
+        font-size: 13px;
+        color: $text-light;
+        border-bottom: 1px solid #efefef;
+    }
+
+    .top-nav-left {
+        display: flex;
+        gap: 34px;
+
+        a:hover {
+            color: $primary-color;
+        }
+    }
+
+    .top-nav-right {
+        @include flex-center(row, flex-end, center);
+        gap: 33px;
+
+        select {
+            appearance: none; // quita la flecha nativa del navegador
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 13px;
+            color: $text-light;
+            padding-right: 11px;
+            background: $caret-svg no-repeat right center;
+        }
+
+        // Un <select> mide lo que su opción más larga ("Contact us", "Log out").
+        // Con un ancho fijo la flecha queda pegada al texto, como en la captura.
+        #language { width: 56px; }
+        #help { width: 40px; }
+        #user-menu { width: 79px; }
+    }
+
+    .user-dropdown {
+        @include flex-center(row, flex-start, center);
+        gap: 8px;
+    }
+
+    .user-icon {
+        width: 15px;
+        height: 15px;
+        color: $text-light;
+    }
+
+    // --- Barra principal ---
+    .main-header {
+        @include flex-center(row, flex-start, center);
+        height: 76px;
+        padding: 0 45px;
+    }
+
+    .logo img {
+        height: 41px;
+        width: auto;
+    }
+
+    .main-nav {
+        display: flex;
+        gap: 39px;
+        margin: 3px 0 0 76px; // el menú va pegado al logo, no centrado
+
+        a {
+            @include flex-center(row, flex-start, center);
+            gap: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: $text-dark;
+
+            &:hover {
+                color: $primary-color;
+            }
+        }
+
+        // FontAwesome dibuja cada ícono en ::before.
+        // Cambiando el código pasamos de chevron (f078) a triángulo (f0d7).
+        i {
+            font-size: 11px;
+            color: $text-light;
+
+            &::before {
+                content: "\f0d7";
+            }
+        }
+    }
+
+    .header-actions {
+        @include flex-center(row, flex-start, center);
+        gap: 52px;
+        margin: 5px 0 0 auto; // margin-left: auto empuja buscador + carrito a la derecha
+    }
+
+    .search-box {
+        @include flex-center(row, space-between, center);
+        width: 274px;
+        height: 36px;
+        padding: 0 20px 0 25px;
+        border: 1px solid #bbbbbb;
+        border-radius: 7px;
+
+        input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+            color: $text-dark;
+
+            &::placeholder {
+                color: $placeholder;
+            }
+        }
+
+        button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 19px;
+            color: $text-dark;
+        }
+    }
+
+    .cart-icon {
+        @include outline-icon($text-dark);
+        font-size: 22px;
+    }
+}
+
+// ==========================================
+// 5. HERO SECTION (Flexbox)
+// ==========================================
+.hero-section {
+    @include flex-center(row, space-between, flex-start);
+    width: calc(100% - #{2 * $page-gutter});
+    max-width: 1336px;
+    height: 531px;
+    margin: 14px auto 0;
+    padding: 129px 229px 0 113px;
+    background-color: $hero-bg;
+    overflow: hidden; // corta el celular y su sombra en el borde del hero
+
+    .hero-content {
+        max-width: 470px;
+
+        h1 {
+            margin-bottom: 21.5px;
+            font-size: 46px;
+            font-weight: 700;
+            line-height: 1.07;
+            color: $hero-title;
+        }
+
+        p {
+            max-width: 440px; // así el texto se corta en las mismas palabras
+            margin-bottom: 5px;
+            font-size: 14.3px;
+            font-weight: 500;
+            line-height: 1.48;
+            color: $hero-text;
+        }
+    }
+
+    .hero-buttons {
+        @include flex-center(row, flex-start, center);
+        gap: 36px;
+    }
+
+    .Watch-Video {
+        margin-top: 4px;
+        white-space: nowrap;
+        font-size: 15px;
+        font-weight: 700;
+        color: $primary-color;
+
+        &::after {
+            content: '›';
+            margin-left: 8px;
+            font-size: 22px;
+            font-weight: 600;
+            line-height: 0;
+        }
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .hero-image {
+        align-self: flex-end; // pegado al borde inferior del hero
+
+        img {
+            width: 349px;
+            height: 422px;
+            border-radius: 60px 60px 0 0;
+            box-shadow: 71px 71px 101px rgba(0, 0, 0, 0.46);
+        }
+    }
+}
+
+// Botón "Get Started" (se usa en el hero y en el CTA)
+.Get-Started {
+    height: 44px;
+    padding: 0 34px;
+    white-space: nowrap;
+    border: none;
+    border-radius: 999px; // píldora
+    background-color: $primary-color;
+    color: $white;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: $hero-btn-hover;
+    }
+}
+
+// ==========================================
+// 6. FEATURES SECTION (CSS Grid)
+// ==========================================
+// Cada PNG está recortado a un zoom distinto, así que cada ícono
+// lleva su propio tamaño y un pequeño ajuste de posición.
+//              n   ancho  alto   dx     dy
+$feature-icons: (1, 129px, 102px, 14px, 4px),
+                (2, 189px, 118px, 6px, 8px),
+                (3, 165px, 108px, 19px, -5px),
+                (4, 146px, 107px, -6px, -7px);
+
+.features-section {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1366px;
+    margin: 40px auto 0;
+    text-align: center;
+
+    .feature {
+        display: grid;
+        grid-template-rows: 130px auto auto; // fila fija para los íconos: los títulos quedan alineados
+        justify-items: center;
+        align-items: center;
+
+        h3 {
+            margin: 30.5px 0 5.5px;
+            font-size: 30.5px;
+            font-weight: 700;
+            line-height: 1.2;
+            color: $text-dark;
+        }
+
+        p {
+            font-size: 14.3px;
+            font-weight: 500;
+            line-height: 1.4;
+            color: $text-body;
+        }
+    }
+
+    @each $n, $w, $h, $dx, $dy in $feature-icons {
+        .feature:nth-child(#{$n}) img {
+            width: $w;
+            height: $h;
+            transform: translate($dx, $dy);
+        }
+    }
+}
+
+// ==========================================
+// 7. BECOME A CREATOR SECTION (CSS Grid)
+// ==========================================
+.become-creator-section {
+    margin-top: 166px;
+    overflow-x: clip; // la mancha no debe crear scroll horizontal
+
+    .creator-container {
+        position: relative; // referencia para posicionar la mancha
+        max-width: $container;
+        margin: 0 auto;
+    }
+
+    // Mancha celeste: absoluta y DETRÁS del contenido (z-index 0 vs 1)
+    .creator-blob-bg {
+        position: absolute;
+        top: -100px;
+        left: 271px;
+        width: 1029px;
+        height: 1180px;
+        z-index: 0;
+        pointer-events: none;
+
+        svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .section-title {
+        position: relative;
+        z-index: 1;
+        padding-left: 118px; // en la captura el título está 59px a la derecha del centro
+        text-align: center;
+        font-size: 39px;
+        font-weight: 700;
+        line-height: 1.2;
+        color: $text-dark;
+    }
+
+    .creator-grid {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 602px 400px;
+        row-gap: 90px;
+        margin: 38px 0 0 191px;
+    }
+
+    .creator-card {
+        display: grid;
+        grid-template-rows: 288px auto auto; // misma altura de foto en toda la fila
+        align-content: start;
+
+        img {
+            width: 325px;
+            height: auto;
+            align-self: start;
+            border-radius: 50%; // las fotos ya son óvalos; esto limpia las esquinas
+        }
+
+        h3 {
+            max-width: 385px;
+            margin: 20px 0 12px;
+            font-size: 23px;
+            font-weight: 700;
+            line-height: 1.07;
+            color: $text-dark;
+        }
+
+        p {
+            max-width: 385px;
+            font-size: 14.2px;
+            font-weight: 500;
+            line-height: 1.49;
+            color: $text-body;
+        }
+
+        // Fila 1: en la captura el texto va más separado del título
+        &:nth-child(-n + 2) h3 {
+            margin-bottom: 36px;
+        }
+    }
+}
+
+// ==========================================
+// 8. CTA SECTION (Flexbox)
+// ==========================================
+.cta-section {
+    @include flex-center(column, flex-start, center);
+    position: relative;
+    left: 11px; // en la captura la caja lavanda está corrida a la derecha…
+    width: calc(100% - 156px);
+    max-width: 1284px;
+    height: 221px;
+    margin: 155px auto 0;
+    padding: 39px 22px 0 0; // …y este padding devuelve el texto al centro
+    background-color: $hero-bg;
+
+    h2 {
+        font-size: 40px;
+        font-weight: 700;
+        line-height: 1.2;
+        color: $primary-color;
+    }
+
+    p {
+        margin-top: 7px;
+        font-size: 14.4px;
+        font-weight: 500;
+        color: $cta-text;
+    }
+
+    .Get-Started {
+        margin-top: 19px;
+        padding: 0 40px;
+    }
+}
+
+// ==========================================
+// 9. FAQ SECTION (acordeón con <details>)
+// ==========================================
+.faq-section {
+    position: relative;
+    width: calc(100% - 156px);
+    max-width: 1284px;
+    margin: -20px auto 64px; // sube 20px y tapa el borde inferior del CTA
+    padding: 20px 52px 0;
+    background-color: $white;
+
+    .faq-item {
+        padding: 20px 0 18px;
+        border-bottom: 1px solid #dadada;
+
+        summary {
+            position: relative;
+            padding-right: 50px;
+            list-style: none; // quita el triángulo por defecto
+            cursor: pointer;
+            font-size: 22.5px;
+            font-weight: 700;
+            line-height: 1.3;
+            color: $text-dark;
+
+            &::-webkit-details-marker {
+                display: none; // lo mismo, para Safari
+            }
+
+            // Chevron: un cuadrado con dos bordes, rotado 45° (apunta abajo)
+            &::after {
+                content: '';
+                position: absolute;
+                top: 2px;
+                right: 4px;
+                width: 15px;
+                height: 15px;
+                border-right: 2px solid $text-dark;
+                border-bottom: 2px solid $text-dark;
+                transform: rotate(45deg);
+                transition: transform 0.2s ease;
+            }
+        }
+
+        // Abierto: el chevron gira y apunta hacia arriba
+        &[open] summary::after {
+            top: 13px;
+            transform: rotate(-135deg);
+        }
+
+        p {
+            max-width: 590px;
+            margin: 20px 0 0 3px;
+            font-size: 14.25px;
+            font-weight: 500;
+            line-height: 1.49;
+            color: $text-body;
+        }
+    }
+}
+
+// ==========================================
+// 10. FOOTER (CSS Grid)
+// ==========================================
+.site-footer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
+
+    .footer-card {
+        @include flex-center(column, flex-start, center);
+        height: 202px;
+        padding-top: 36px;
+        text-align: center;
+        border-right: 1px solid $border-color;
+
+        &:last-child {
+            border-right: none;
+        }
+
+        i {
+            font-size: 30px;
+            color: $icon-gray;
+        }
+
+        // En la captura los íconos son de contorno
+        .fa-solid {
+            @include outline-icon($icon-gray, 1.6px);
+        }
+
+        // y el escudo no va partido a la mitad: usamos "shield" (f132)
+        .fa-shield-halved::before {
+            content: "\f132";
+        }
+
+        h3 {
+            margin-top: 10px;
+            font-size: 19px;
+            font-weight: 500;
+            line-height: 1.3;
+            color: $text-dark;
+
+            // "AMWAY" fino y espaciado; "PROMISE" en negrita
+            span {
+                margin-right: 5px;
+                font-weight: 500;
+                letter-spacing: 1.5px;
+            }
+        }
+
+        p {
+            max-width: 170px; // así cada texto se parte en 2 líneas como en la captura
+            margin-top: 6px;
+            font-size: 10.8px;
+            font-weight: 500;
+            line-height: 1.25;
+            color: $text-muted;
+        }
+
+        &:nth-child(2) {
+            h3 {
+                font-weight: 700;
+            }
+
+            p {
+                max-width: 205px; // corta después de "goal,"
+            }
+        }
+
+        a {
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: $text-dark;
+
+            &::after {
+                content: '›';
+                margin-left: 7px;
+                font-size: 19px;
+                font-weight: 600;
+                line-height: 0;
+            }
+        }
+    }
+}
+
+// ==========================================
+// 11. RESPONSIVE
+// ==========================================
+// Pantallas más anchas que la captura: el contenido se queda en 1440px centrado
+@media (min-width: $breakpoint-wide) {
+    .site-header {
+        .top-bar {
+            padding-left: calc(50% - 670px);
+            padding-right: calc(50% - 674px);
+        }
+
+        .main-header {
+            padding-left: calc(50% - 675px);
+            padding-right: calc(50% - 675px);
+        }
+    }
+
+    .site-footer {
+        padding: 0 calc(50% - #{$container * 0.5});
+    }
+}
+
+@media (max-width: $breakpoint-tablet) {
+    .site-header .main-nav {
+        display: none;
+    }
+
+    .hero-section {
+        flex-direction: column;
+        align-items: center;
+        width: auto;
+        height: auto;
+        margin: 10px 20px 0;
+        padding: 40px 30px 0;
+        text-align: center;
+
+        .hero-buttons {
+            justify-content: center;
+        }
+
+        .hero-image {
+            margin-top: 40px;
+            align-self: center;
+
+            img {
+                width: 260px;
+                height: auto;
+            }
+        }
+    }
+
+    .features-section {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 40px;
+    }
+
+    .become-creator-section {
+        .creator-blob-bg {
+            display: none;
+        }
+
+        .section-title {
+            padding-left: 0;
+        }
+
+        .creator-grid {
+            grid-template-columns: 1fr;
+            justify-items: center;
+            row-gap: 50px;
+            margin: 40px 20px 0;
+        }
+    }
+
+    .cta-section {
+        left: 0;
+        width: auto;
+        height: auto;
+        margin: 60px 20px 0;
+        padding: 30px 15px;
+        text-align: center;
+    }
+
+    .faq-section {
+        width: auto;
+        margin: 0 20px 60px;
+        padding: 20px 20px 0;
+    }
+
+    .site-footer {
+        grid-template-columns: 1fr;
+
+        .footer-card {
+            border-right: none;
+            border-bottom: 1px solid $border-color;
+        }
+    }
+}
+
+@media (max-width: $breakpoint-mobile) {
+    .site-header {
+        .top-bar {
+            flex-direction: column;
+            height: auto;
+            gap: 6px;
+            padding: 8px 15px;
+        }
+
+        .top-nav-left,
+        .top-nav-right {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 4px 16px;
+        }
+
+        .main-header {
+            flex-wrap: wrap;
+            height: auto;
+            gap: 12px;
+            padding: 12px 15px;
+        }
+
+        .search-box {
+            width: 180px;
+        }
+    }
+
+    .hero-section .hero-content h1 {
+        font-size: 32px;
+    }
+
+    .features-section {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-section h2 {
+        font-size: 28px;
+    }
+
+    .faq-section .faq-item summary {
+        font-size: 17px;
+    }
+}
