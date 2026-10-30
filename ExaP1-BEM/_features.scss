@@ -1,0 +1,70 @@
+// ============================================================
+// _features.scss  — BLOQUE: features
+//
+// BEM en este archivo:
+//   .features            → BLOQUE: sección de 4 características
+//   .features__item      → ELEMENTO: tarjeta individual
+//   .features__item-title → ELEMENTO: título de la tarjeta
+//   .features__item-text  → ELEMENTO: texto de la tarjeta
+//
+// Por qué CSS Grid aquí (no Flexbox):
+//   Necesitamos 4 columnas iguales con alineación vertical
+//   consistente entre tarjetas → Grid repeat(4,1fr) maneja
+//   esto nativamente. Flexbox requeriría anchos manuales.
+//
+// $feature-icons: lista de datos por tarjeta para ajustar
+// cada imagen sin clases adicionales (usa @each + nth-child).
+// ============================================================
+@use 'variables' as v;
+
+// Lista: (índice, width, height, desplazamiento-x, desplazamiento-y)
+$feature-icons:
+    (1, 129px, 102px,  14px,   4px),
+    (2, 189px, 118px,   6px,   8px),
+    (3, 165px, 108px,  19px,  -5px),
+    (4, 146px, 107px,  -6px,  -7px);
+
+.features {
+    // Grid 2D: 4 columnas de igual ancho
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1366px;
+    margin: 40px auto 0;
+    text-align: center;
+
+    // ELEMENTO: cada tarjeta usa sub-grid interno para alinear
+    // imagen / título / texto entre columnas
+    &__item {
+        display: grid;
+        grid-template-rows: 130px auto auto;
+        justify-items: center;
+        align-items: center;
+    }
+
+    // ELEMENTO: título de tarjeta
+    &__item-title {
+        margin: 30.5px 0 5.5px;
+        font-size: 30.5px;
+        font-weight: 700;
+        line-height: 1.2;
+        color: v.$text-dark;
+    }
+
+    // ELEMENTO: párrafo de tarjeta
+    &__item-text {
+        font-size: 14.3px;
+        font-weight: 500;
+        line-height: 1.4;
+        color: v.$text-body;
+    }
+
+    // Ajuste de tamaño/posición de cada ícono via @each
+    // Evita repetir 4 reglas nth-child manualmente
+    @each $n, $w, $h, $dx, $dy in $feature-icons {
+        &__item:nth-child(#{$n}) img {
+            width: $w;
+            height: $h;
+            transform: translate($dx, $dy);
+        }
+    }
+}

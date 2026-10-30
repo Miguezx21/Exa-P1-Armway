@@ -1,0 +1,131 @@
+// ============================================================
+// _creators.scss  — BLOQUE: creators
+//
+// BEM en este archivo:
+//   .creators                  → BLOQUE
+//   .creators__container       → ELEMENTO: centrador de contenido
+//   .creators__blob            → ELEMENTO: fondo SVG decorativo
+//   .creators__title           → ELEMENTO: título de sección
+//   .creators__grid            → ELEMENTO: contenedor de tarjetas (Grid)
+//   .creators__grid--3-col     → MODIFIER: 3 columnas
+//   .creators__grid--4-col     → MODIFIER: 4 columnas
+//   .creators__card            → ELEMENTO: tarjeta individual
+//   .creators__card--horizontal → MODIFIER: imagen + texto en fila
+//   .creators__card-content    → ELEMENTO: wrapper de texto (modo horizontal)
+//   .creators__card-title      → ELEMENTO: título de tarjeta
+//   .creators__card-text       → ELEMENTO: párrafo de tarjeta
+//
+// Por qué CSS Grid aquí:
+//   Los grids de 2, 3 o 4 columnas son 2D y necesitan
+//   alineación consistente en filas Y columnas → Grid.
+//   El MODIFIER --horizontal usa un sub-grid de 2 columnas
+//   (imagen a la izq, texto a la der).
+// ============================================================
+@use 'variables' as v;
+
+.creators {
+    margin-top: 166px;
+    overflow: clip;
+
+    // ELEMENTO: centrador con posición relativa para el blob
+    &__container {
+        position: relative;
+        overflow: hidden;
+        max-width: v.$container;
+        margin: 0 auto;
+    }
+
+    // ELEMENTO: fondo decorativo SVG (shape blob)
+    &__blob {
+        position: absolute;
+        top: -100px;
+        left: 271px;
+        width: 1029px;
+        height: 1180px;
+        z-index: 0;
+        pointer-events: none;
+        svg { display: block; width: 100%; height: 100%; }
+    }
+
+    // ELEMENTO: título de sección
+    &__title {
+        position: relative;
+        z-index: 1;
+        padding-left: 118px;
+        text-align: center;
+        font-size: 39px;
+        font-weight: 700;
+        line-height: 1.2;
+        color: v.$text-dark;
+    }
+
+    // ELEMENTO: grid de tarjetas — base 2 columnas
+    &__grid {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 602px 400px;
+        row-gap: 90px;
+        margin: 38px 0 0 191px;
+
+        // MODIFIER: 3 columnas iguales
+        &--3-col {
+            grid-template-columns: repeat(3, 1fr);
+            column-gap: 30px;
+            margin-left: 0;
+        }
+
+        // MODIFIER: 4 columnas iguales
+        &--4-col {
+            grid-template-columns: repeat(4, 1fr);
+            column-gap: 24px;
+            margin-left: 0;
+        }
+    }
+
+    // ELEMENTO: tarjeta base (imagen arriba, texto abajo)
+    &__card {
+        display: grid;
+        grid-template-rows: 288px auto auto;
+        align-content: start;
+        img { width: 325px; height: auto; align-self: start; }
+
+        // MODIFIER: tarjeta horizontal (imagen izq, texto der)
+        // Cambia el layout interno a 2 columnas
+        &--horizontal {
+            grid-template-columns: 150px 1fr;
+            grid-template-rows: auto;
+            column-gap: 24px;
+            align-items: center;
+            img {
+                grid-row: 1 / span 2;
+                width: 150px;
+                height: 150px;
+                border-radius: 20%;
+                object-fit: cover;
+            }
+            // display:contents hace que este div no genere caja propia
+            // sus hijos participan directamente en el grid del padre
+            .creators__card-content { display: contents; }
+        }
+    }
+
+    // ELEMENTO: título dentro de la tarjeta
+    &__card-title {
+        max-width: 385px;
+        margin: 20px 0 12px;
+        font-size: 23px;
+        font-weight: 700;
+        line-height: 1.07;
+        color: v.$text-dark;
+    }
+
+    // ELEMENTO: párrafo dentro de la tarjeta
+    &__card-text {
+        max-width: 385px;
+        font-size: 14.2px;
+        font-weight: 500;
+        line-height: 1.49;
+        color: v.$text-body;
+    }
+}

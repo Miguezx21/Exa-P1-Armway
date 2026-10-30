@@ -1,0 +1,25 @@
+// ============================================================
+// main.scss — Archivo raíz de estilos
+//
+// Este archivo SOLO importa parciales en el orden correcto.
+// No debe contener CSS propio.
+//
+// Orden de @use:
+//   1. variables y mixins primero (sin CSS de salida)
+//   2. base (reset)
+//   3. componentes en orden de aparición en el HTML
+//   4. responsive al final (sobrescribe lo anterior)
+//
+// Compilar: npx sass main.scss styles.css
+// ============================================================
+
+@use 'variables';   // $variables disponibles en cada parcial
+@use 'mixins';      // mixins disponibles en cada parcial
+@use 'base';        // reset + estilos de etiqueta
+@use 'btn';         // bloque .btn
+@use 'site-header'; // bloque .site-header
+@use 'hero';        // bloque .hero
+@use 'features';    // bloque .features
+@use 'creators';    // bloque .creators
+@use 'footer';      // bloque .footer
+@use 'responsive';  // media queries (siempre al final)

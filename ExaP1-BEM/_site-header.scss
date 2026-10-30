@@ -1,0 +1,133 @@
+// ============================================================
+// _site-header.scss  — BLOQUE: site-header
+//
+// BEM en este archivo:
+//   .site-header              → BLOQUE
+//   .site-header__top-bar     → ELEMENTO: barra superior de navegación
+//   .site-header__nav--left   → ELEMENTO con MODIFIER de posición
+//   .site-header__nav--right  → ELEMENTO con MODIFIER de posición
+//   .site-header__user        → ELEMENTO: contenedor del usuario
+//   .site-header__user-icon   → ELEMENTO: ícono SVG de usuario
+//   .site-header__main        → ELEMENTO: barra principal del header
+//   .site-header__logo        → ELEMENTO: logotipo
+//   .site-header__nav         → ELEMENTO: navegación principal
+//   .site-header__actions     → ELEMENTO: búsqueda + carrito
+//   .site-header__search      → ELEMENTO: campo de búsqueda
+//   .site-header__cart        → ELEMENTO: ícono del carrito
+//
+// Uso de Flexbox (1D): todos los hijos del header se alinean
+// en una sola fila → ideal para barras horizontales.
+// ============================================================
+@use 'variables' as v;
+@use 'mixins' as m;
+
+.site-header {
+
+    // ELEMENTO: barra delgada superior con links secundarios
+    // Flexbox row → space-between para separar izq/der
+    &__top-bar {
+        @include m.flex-center(row, space-between, center);
+        height: 33px;
+        padding: 1px 46px 0 50px;
+        font-size: 13px;
+        color: v.$text-light;
+        border-bottom: 1px solid #efefef;
+    }
+
+    // ELEMENTO con MODIFIER: nav izquierdo del top-bar
+    &__nav--left {
+        display: flex;
+        gap: 34px;
+        a:hover { color: v.$primary-color; }
+    }
+
+    // ELEMENTO con MODIFIER: nav derecho del top-bar (selects de idioma/ayuda)
+    &__nav--right {
+        @include m.flex-center(row, flex-end, center);
+        gap: 33px;
+        select {
+            appearance: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 13px;
+            color: v.$text-light;
+            padding-right: 11px;
+            background: v.$caret-svg no-repeat right center;
+        }
+        #language  { width: 56px; }
+        #help      { width: 40px; }
+        #user-menu { width: 79px; }
+    }
+
+    // ELEMENTO: wrapper del ícono + select de usuario
+    &__user {
+        @include m.flex-center(row, flex-start, center);
+        gap: 8px;
+    }
+
+    // ELEMENTO: ícono SVG de usuario
+    &__user-icon { width: 15px; height: 15px; color: v.$text-light; }
+
+    // ELEMENTO: barra principal (logo + nav + acciones)
+    // Flexbox row para alinear todo horizontalmente
+    &__main {
+        @include m.flex-center(row, flex-start, center);
+        height: 76px;
+        padding: 0 45px;
+    }
+
+    // ELEMENTO: logotipo
+    &__logo img { height: 41px; width: auto; }
+
+    // ELEMENTO: nav central con los links de categorías
+    &__nav {
+        display: flex;
+        gap: 39px;
+        margin: 3px 0 0 76px;
+        a {
+            @include m.flex-center(row, flex-start, center);
+            gap: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: v.$text-dark;
+            &:hover { color: v.$primary-color; }
+        }
+        i { font-size: 11px; color: v.$text-light; }
+    }
+
+    // ELEMENTO: grupo de búsqueda + carrito
+    // margin-left: auto → empuja al extremo derecho (truco Flexbox)
+    &__actions {
+        @include m.flex-center(row, flex-start, center);
+        gap: 52px;
+        margin: 5px 0 0 auto;
+    }
+
+    // ELEMENTO: input de búsqueda
+    &__search {
+        @include m.flex-center(row, space-between, center);
+        width: 274px;
+        height: 36px;
+        padding: 0 20px 0 25px;
+        border: 1px solid #bbbbbb;
+        border-radius: 7px;
+        input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+            color: v.$text-dark;
+            &::placeholder { color: v.$placeholder; }
+        }
+        button { background: transparent; border: none; cursor: pointer; font-size: 19px; color: v.$text-dark; }
+    }
+
+    // ELEMENTO: ícono del carrito (solo contorno con mixin outline-icon)
+    &__cart {
+        @include m.outline-icon(v.$text-dark);
+        font-size: 22px;
+    }
+}

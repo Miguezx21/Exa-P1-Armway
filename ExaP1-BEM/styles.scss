@@ -1,0 +1,509 @@
+// ==========================================
+// 1. VARIABLES & CONFIGURACIÓN
+// ==========================================
+$font-family: 'Poppins', sans-serif;
+
+// Colores
+$primary-color:  #38539a;
+$hero-title:     #3f5da9;
+$hero-text:      #4460ab;
+$cta-text:       #465fa1;
+$hero-bg:        #f1f2ff;
+$blob-color:     #e5fdff;
+$hero-btn-hover: #2b4178;
+$text-dark:      #2c2c2c;
+$text-body:      #3a3a3a;
+$text-muted:     #555555;
+$text-light:     #666666;
+$placeholder:    #999999;
+$icon-gray:      #8c8c8c;
+$border-color:   #e5e5e5;
+$white:          #ffffff;
+
+// Layout
+$container:       1440px;
+$page-gutter:     52px;
+
+// Breakpoints — Desktop-first (max-width para achicar, min-width para escalar)
+$bp-mobile: 768px;
+$bp-tablet: 1024px;
+$bp-wide:   1441px;
+
+$caret-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='4' viewBox='0 0 7 4'%3E%3Cpath d='M0 0h7L3.5 4z' fill='%23666666'/%3E%3C/svg%3E");
+
+
+// ==========================================
+// 2. MIXINS
+// ==========================================
+
+// flex-center: centra con flexbox; parámetros ajustables
+@mixin flex-center($direction: row, $justify: center, $align: center) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+// outline-icon: ícono solo con contorno (text-stroke)
+@mixin outline-icon($color, $stroke: 1.5px) {
+    color: transparent;
+    -webkit-text-stroke: $stroke $color;
+}
+
+
+// ==========================================
+// 3. RESETEO Y ESTILOS BASE
+// ==========================================
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: $font-family;
+    color: $text-dark;
+    line-height: 1.5;
+    background-color: $white;
+}
+
+a { text-decoration: none; color: inherit; }
+img { display: block; }
+
+
+// ==========================================
+// 4. BLOQUE: btn
+//    Modificadores: --primary, --secondary
+// ==========================================
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    padding: 0 34px;
+    white-space: nowrap;
+    border: none;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    &--primary {
+        background-color: $primary-color;
+        color: $white;
+        &:hover { background-color: $hero-btn-hover; }
+    }
+
+    &--secondary {
+        background-color: transparent;
+        color: $primary-color;
+        padding: 0;
+        &::after { content: '›'; margin-left: 8px; font-size: 22px; font-weight: 600; line-height: 0; }
+        &:hover { text-decoration: underline; }
+    }
+}
+
+
+// ==========================================
+// 5. BLOQUE: site-header
+//    Elementos: __top-bar, __nav--left, __nav--right,
+//               __user, __user-icon, __main, __logo,
+//               __nav, __actions, __search, __cart
+// ==========================================
+.site-header {
+
+    &__top-bar {
+        @include flex-center(row, space-between, center);
+        height: 33px;
+        padding: 1px 46px 0 50px;
+        font-size: 13px;
+        color: $text-light;
+        border-bottom: 1px solid #efefef;
+    }
+
+    &__nav--left {
+        display: flex;
+        gap: 34px;
+        a:hover { color: $primary-color; }
+    }
+
+    &__nav--right {
+        @include flex-center(row, flex-end, center);
+        gap: 33px;
+        select {
+            appearance: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 13px;
+            color: $text-light;
+            padding-right: 11px;
+            background: $caret-svg no-repeat right center;
+        }
+        #language  { width: 56px; }
+        #help      { width: 40px; }
+        #user-menu { width: 79px; }
+    }
+
+    &__user {
+        @include flex-center(row, flex-start, center);
+        gap: 8px;
+    }
+
+    &__user-icon { width: 15px; height: 15px; color: $text-light; }
+
+    &__main {
+        @include flex-center(row, flex-start, center);
+        height: 76px;
+        padding: 0 45px;
+    }
+
+    &__logo img { height: 41px; width: auto; }
+
+    &__nav {
+        display: flex;
+        gap: 39px;
+        margin: 3px 0 0 76px;
+        a {
+            @include flex-center(row, flex-start, center);
+            gap: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: $text-dark;
+            &:hover { color: $primary-color; }
+        }
+        i { font-size: 11px; color: $text-light; }
+    }
+
+    &__actions {
+        @include flex-center(row, flex-start, center);
+        gap: 52px;
+        margin: 5px 0 0 auto; // auto empuja al extremo derecho
+    }
+
+    &__search {
+        @include flex-center(row, space-between, center);
+        width: 274px;
+        height: 36px;
+        padding: 0 20px 0 25px;
+        border: 1px solid #bbbbbb;
+        border-radius: 7px;
+        input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+            color: $text-dark;
+            &::placeholder { color: $placeholder; }
+        }
+        button { background: transparent; border: none; cursor: pointer; font-size: 19px; color: $text-dark; }
+    }
+
+    &__cart {
+        @include outline-icon($text-dark);
+        font-size: 22px;
+    }
+}
+
+
+// ==========================================
+// 6. BLOQUE: hero (Flexbox)
+//    Elementos: __content, __title, __text,
+//               __buttons, __image
+// ==========================================
+.hero {
+    @include flex-center(row, space-between, flex-start);
+    width: calc(100% - #{2 * $page-gutter});
+    max-width: 1336px;
+    height: 531px;
+    margin: 14px auto 0;
+    padding: 129px 229px 0 113px;
+    background-color: $hero-bg;
+    overflow: hidden;
+
+    &__content { max-width: 470px; }
+
+    &__title {
+        margin-bottom: 21.5px;
+        font-size: 46px;
+        font-weight: 700;
+        line-height: 1.07;
+        color: $hero-title;
+    }
+
+    &__text {
+        max-width: 440px;
+        margin-bottom: 5px;
+        font-size: 14.3px;
+        font-weight: 500;
+        line-height: 1.48;
+        color: $hero-text;
+    }
+
+    &__buttons {
+        @include flex-center(row, flex-start, center);
+        gap: 36px;
+    }
+
+    &__image {
+        align-self: flex-end;
+        img {
+            width: 349px;
+            height: 422px;
+            border-radius: 60px 60px 0 0;
+            box-shadow: 71px 71px 101px rgba(0, 0, 0, 0.46);
+        }
+    }
+}
+
+
+// ==========================================
+// 7. BLOQUE: features (CSS Grid)
+//    Elemento: __item, __item-title, __item-text
+// ==========================================
+$feature-icons:
+    (1, 129px, 102px,  14px,   4px),
+    (2, 189px, 118px,   6px,   8px),
+    (3, 165px, 108px,  19px,  -5px),
+    (4, 146px, 107px,  -6px,  -7px);
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1366px;
+    margin: 40px auto 0;
+    text-align: center;
+
+    &__item {
+        display: grid;
+        grid-template-rows: 130px auto auto;
+        justify-items: center;
+        align-items: center;
+    }
+
+    &__item-title {
+        margin: 30.5px 0 5.5px;
+        font-size: 30.5px;
+        font-weight: 700;
+        line-height: 1.2;
+        color: $text-dark;
+    }
+
+    &__item-text {
+        font-size: 14.3px;
+        font-weight: 500;
+        line-height: 1.4;
+        color: $text-body;
+    }
+
+    @each $n, $w, $h, $dx, $dy in $feature-icons {
+        &__item:nth-child(#{$n}) img {
+            width: $w;
+            height: $h;
+            transform: translate($dx, $dy);
+        }
+    }
+}
+
+
+// ==========================================
+// 8. BLOQUE: creators (CSS Grid)
+//    Elementos: __container, __blob, __title,
+//               __grid, __card, __card-content,
+//               __card-title, __card-text
+//    Modificadores de __grid: --3-col, --4-col
+//    Modificadores de __card: --horizontal
+// ==========================================
+.creators {
+    margin-top: 166px;
+    overflow-x: clip;
+
+    &__container {
+        position: relative;
+        max-width: $container;
+        margin: 0 auto;
+    }
+
+    &__blob {
+        position: absolute;
+        top: -100px;
+        left: 271px;
+        width: 1029px;
+        height: 1180px;
+        z-index: 0;
+        pointer-events: none;
+        svg { display: block; width: 100%; height: 100%; }
+    }
+
+    &__title {
+        position: relative;
+        z-index: 1;
+        padding-left: 118px;
+        text-align: center;
+        font-size: 39px;
+        font-weight: 700;
+        line-height: 1.2;
+        color: $text-dark;
+    }
+
+    &__grid {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 602px 400px; // base: 2 columnas
+        row-gap: 90px;
+        margin: 38px 0 0 191px;
+
+        &--3-col { // MODIFICADOR: 3 columnas
+            grid-template-columns: repeat(3, 1fr);
+            column-gap: 30px;
+            margin-left: 0;
+        }
+
+        &--4-col { // MODIFICADOR: 4 columnas
+            grid-template-columns: repeat(4, 1fr);
+            column-gap: 24px;
+            margin-left: 0;
+        }
+    }
+
+    &__card {
+        display: grid;
+        grid-template-rows: 288px auto auto;
+        align-content: start;
+        img { width: 325px; height: auto; align-self: start; }
+
+        &--horizontal { // MODIFICADOR: imagen + texto en fila
+            grid-template-columns: 150px 1fr;
+            grid-template-rows: auto;
+            column-gap: 24px;
+            align-items: center;
+            img { grid-row: 1 / span 2; width: 150px; height: 150px; border-radius: 20%; object-fit: cover; }
+            .creators__card-content { display: contents; }
+        }
+    }
+
+    &__card-title {
+        max-width: 385px;
+        margin: 20px 0 12px;
+        font-size: 23px;
+        font-weight: 700;
+        line-height: 1.07;
+        color: $text-dark;
+    }
+
+    &__card-text {
+        max-width: 385px;
+        font-size: 14.2px;
+        font-weight: 500;
+        line-height: 1.49;
+        color: $text-body;
+    }
+}
+
+
+// ==========================================
+// 9. BLOQUE: footer (CSS Grid)
+//    Elemento: __card, __card-title,
+//              __card-text, __card-link
+// ==========================================
+.footer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
+
+    &__card {
+        @include flex-center(column, flex-start, center);
+        height: 202px;
+        padding-top: 36px;
+        text-align: center;
+        border-right: 1px solid $border-color;
+        &:last-child { border-right: none; }
+        i { font-size: 30px; color: $icon-gray; }
+        .fa-solid { @include outline-icon($icon-gray, 1.6px); }
+    }
+
+    &__card-title {
+        margin-top: 10px;
+        font-size: 19px;
+        font-weight: 500;
+        line-height: 1.3;
+        color: $text-dark;
+        span { margin-right: 5px; font-weight: 500; letter-spacing: 1.5px; }
+    }
+
+    &__card-text {
+        max-width: 170px;
+        margin-top: 6px;
+        font-size: 10.8px;
+        font-weight: 500;
+        line-height: 1.25;
+        color: $text-muted;
+    }
+
+    &__card-link {
+        margin-top: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        color: $text-dark;
+        &::after { content: '›'; margin-left: 7px; font-size: 19px; font-weight: 600; line-height: 0; }
+    }
+}
+
+
+// ==========================================
+// 10. RESPONSIVE (Media Queries)
+// ==========================================
+
+// Pantallas ANCHAS (min-width: 1441px)
+// Usamos min-width porque AGREGAMOS estilos desde pantallas grandes hacia arriba
+@media (min-width: $bp-wide) {
+    .site-header {
+        &__top-bar { padding: 0 calc(50% - 670px); }
+        &__main { padding: 0 calc(50% - 675px); }
+    }
+}
+
+// Tablet (max-width: 1024px)
+// Usamos max-width porque SOBRESCRIBIMOS los estilos base de desktop
+@media (max-width: $bp-tablet) {
+    .site-header__nav { display: none; }
+
+    .hero {
+        flex-direction: column;
+        align-items: center;
+        width: auto; height: auto;
+        margin: 10px 20px 0;
+        padding: 40px 30px 0;
+        text-align: center;
+        &__buttons { justify-content: center; }
+        &__image { margin-top: 40px; align-self: center; img { width: 260px; height: auto; } }
+    }
+
+    .features { grid-template-columns: repeat(2, 1fr); row-gap: 40px; }
+
+    .creators {
+        &__blob { display: none; }
+        &__title { padding-left: 0; }
+        &__grid { grid-template-columns: 1fr; justify-items: center; row-gap: 50px; margin: 40px 20px 0; }
+    }
+
+    .footer {
+        grid-template-columns: 1fr;
+        &__card { border-right: none; border-bottom: 1px solid $border-color; }
+    }
+}
+
+// Móvil (max-width: 768px)
+// ADICIONAL sobre los estilos de tablet: ajustes para pantallas aún más pequeñas
+@media (max-width: $bp-mobile) {
+    .site-header {
+        &__top-bar { flex-direction: column; height: auto; gap: 6px; padding: 8px 15px; }
+        &__nav--left, &__nav--right { flex-wrap: wrap; justify-content: center; gap: 4px 16px; }
+        &__main { flex-wrap: wrap; height: auto; gap: 12px; padding: 12px 15px; }
+        &__search { width: 180px; }
+    }
+    .hero__title { font-size: 32px; }
+    .features { grid-template-columns: 1fr; }
+}

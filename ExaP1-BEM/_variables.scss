@@ -1,0 +1,40 @@
+// ============================================================
+// _variables.scss
+// Todas las variables del proyecto centralizadas aquí.
+// Importar en main.scss con @use 'variables' as v;
+// Usar en otros parciales con: v.$primary-color
+// ============================================================
+
+// Tipografía
+$font-family: 'Poppins', sans-serif;
+
+// Paleta de colores
+$primary-color:  #38539a;   // azul corporativo Amway
+$hero-title:     #3f5da9;
+$hero-text:      #4460ab;
+$cta-text:       #465fa1;
+$hero-bg:        #f1f2ff;
+$blob-color:     #e5fdff;
+$hero-btn-hover: #2b4178;
+$text-dark:      #2c2c2c;
+$text-body:      #3a3a3a;
+$text-muted:     #555555;
+$text-light:     #666666;
+$placeholder:    #999999;
+$icon-gray:      #8c8c8c;
+$border-color:   #e5e5e5;
+$white:          #ffffff;
+
+// Layout
+$container:    1440px;
+$page-gutter:  52px;
+
+// Breakpoints — estrategia Desktop-first
+// max-width → achica desde desktop hacia mobile
+// min-width → escala desde mobile hacia desktop (para bp-wide)
+$bp-mobile: 768px;
+$bp-tablet: 1024px;
+$bp-wide:   1441px;
+
+// SVG inline del caret para los <select>
+$caret-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='4' viewBox='0 0 7 4'%3E%3Cpath d='M0 0h7L3.5 4z' fill='%23666666'/%3E%3C/svg%3E");

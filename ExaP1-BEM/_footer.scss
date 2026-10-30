@@ -1,0 +1,77 @@
+// ============================================================
+// _footer.scss  — BLOQUE: footer
+//
+// BEM en este archivo:
+//   .footer            → BLOQUE: pie de página
+//   .footer__card      → ELEMENTO: cada celda del footer
+//   .footer__card-title → ELEMENTO: título de celda
+//   .footer__card-text  → ELEMENTO: descripción de celda
+//   .footer__card-link  → ELEMENTO: enlace "Learn More"
+//
+// Por qué CSS Grid aquí:
+//   3 columnas de igual ancho con separadores verticales →
+//   Grid repeat(3,1fr) es la opción más limpia.
+//
+// Por qué Flexbox dentro de __card:
+//   Los elementos internos (ícono, título, texto, link) se
+//   apilan verticalmente en UNA columna → Flexbox column.
+// ============================================================
+@use 'variables' as v;
+@use 'mixins' as m;
+
+.footer {
+    // Grid 2D: 3 columnas iguales para las tarjetas
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid v.$border-color;
+    border-bottom: 1px solid v.$border-color;
+
+    // ELEMENTO: celda individual del footer
+    // Flexbox column: ícono → título → texto → link apilados
+    &__card {
+        @include m.flex-center(column, flex-start, center);
+        height: 202px;
+        padding-top: 36px;
+        text-align: center;
+        border-right: 1px solid v.$border-color;
+        &:last-child { border-right: none; }
+        i { font-size: 30px; color: v.$icon-gray; }
+        // Los íconos fa-solid se muestran solo con contorno (mixin outline-icon)
+        .fa-solid { @include m.outline-icon(v.$icon-gray, 1.6px); }
+    }
+
+    // ELEMENTO: título de celda
+    &__card-title {
+        margin-top: 10px;
+        font-size: 19px;
+        font-weight: 500;
+        line-height: 1.3;
+        color: v.$text-dark;
+        span { margin-right: 5px; font-weight: 500; letter-spacing: 1.5px; }
+    }
+
+    // ELEMENTO: texto descriptivo
+    &__card-text {
+        max-width: 170px;
+        margin-top: 6px;
+        font-size: 10.8px;
+        font-weight: 500;
+        line-height: 1.25;
+        color: v.$text-muted;
+    }
+
+    // ELEMENTO: enlace "Learn More" con flecha decorativa
+    &__card-link {
+        margin-top: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        color: v.$text-dark;
+        &::after {
+            content: '›';
+            margin-left: 7px;
+            font-size: 19px;
+            font-weight: 600;
+            line-height: 0;
+        }
+    }
+}

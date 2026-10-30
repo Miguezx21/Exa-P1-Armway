@@ -1,0 +1,103 @@
+// ============================================================
+// _responsive.scss
+// Media queries — estrategia Desktop-first
+//
+// REGLA CLAVE:
+//   max-width → los estilos SE APLICAN cuando la pantalla
+//               es MENOR O IGUAL al valor indicado.
+//               Usamos esto para SOBRESCRIBIR el diseño de
+//               desktop a medida que achicamos la pantalla.
+//
+//   min-width → los estilos SE APLICAN cuando la pantalla
+//               es MAYOR O IGUAL al valor indicado.
+//               Usamos esto SOLO para el breakpoint "wide"
+//               donde AGREGAMOS padding extra en pantallas
+//               muy grandes (> 1441px).
+//
+// Orden correcto en Desktop-first:
+//   1. Estilos base (sin media query) = diseño desktop
+//   2. @media max-width: 1024px       = tablet → achica
+//   3. @media max-width: 768px        = móvil  → achica más
+// ============================================================
+@use 'variables' as v;
+
+// ── PANTALLAS MUY ANCHAS (min-width: 1441px) ──────────────
+// Centramos el header cuando la pantalla supera el container
+// Usamos min-width porque AGREGAMOS estilos (no sobrescribimos)
+@media (min-width: v.$bp-wide) {
+    .site-header {
+        &__top-bar { padding: 0 calc(50% - 670px); }
+        &__main    { padding: 0 calc(50% - 675px); }
+    }
+}
+
+// ── TABLET (max-width: 1024px) ────────────────────────────
+// Ocultamos la nav central, apiñamos el hero y simplificamos
+// los grids. Usamos max-width porque SOBRESCRIBIMOS el desktop.
+@media (max-width: v.$bp-tablet) {
+
+    // Ocultar nav principal — queda solo logo + acciones
+    .site-header__nav { display: none; }
+
+    // Hero: de fila a columna, centrado
+    // Flexbox cambia de row → column con flex-direction
+    .hero {
+        flex-direction: column;
+        align-items: center;
+        width: auto; height: auto;
+        margin: 10px 20px 0;
+        padding: 40px 30px 0;
+        text-align: center;
+        &__buttons { justify-content: center; }
+        &__image {
+            margin-top: 40px;
+            align-self: center;
+            img { width: 260px; height: auto; }
+        }
+    }
+
+    // Features: de 4 col a 2 col (Grid redefine la plantilla)
+    .features { grid-template-columns: repeat(2, 1fr); row-gap: 40px; }
+
+    // Creators: sin blob, grid a 1 columna
+    .creators {
+        &__blob   { display: none; }
+        &__title  { padding-left: 0; }
+        &__grid   {
+            grid-template-columns: 1fr;
+            justify-items: center;
+            row-gap: 50px;
+            margin: 40px 20px 0;
+        }
+    }
+
+    // Footer: de 3 col a 1 col apilada
+    .footer {
+        grid-template-columns: 1fr;
+        &__card {
+            border-right: none;
+            border-bottom: 1px solid v.$border-color;
+        }
+    }
+}
+
+// ── MÓVIL (max-width: 768px) ──────────────────────────────
+// ACUMULATIVO sobre los estilos de tablet (arriba).
+// Solo añadimos/corregimos lo que tablet no alcanza a cubrir.
+@media (max-width: v.$bp-mobile) {
+
+    // Header: top-bar pasa a columna, main envuelve en 2 filas
+    .site-header {
+        &__top-bar   { flex-direction: column; height: auto; gap: 6px; padding: 8px 15px; }
+        &__nav--left,
+        &__nav--right { flex-wrap: wrap; justify-content: center; gap: 4px 16px; }
+        &__main      { flex-wrap: wrap; height: auto; gap: 12px; padding: 12px 15px; }
+        &__search    { width: 180px; }
+    }
+
+    // Hero: título más pequeño en móvil
+    .hero__title { font-size: 32px; }
+
+    // Features: de 2 col a 1 col
+    .features { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,69 @@
+// ============================================================
+// _hero.scss  — BLOQUE: hero
+//
+// BEM en este archivo:
+//   .hero           → BLOQUE: sección principal de bienvenida
+//   .hero__content  → ELEMENTO: columna izquierda (texto + botones)
+//   .hero__title    → ELEMENTO: título principal h1
+//   .hero__text     → ELEMENTO: párrafo descriptivo
+//   .hero__buttons  → ELEMENTO: fila de botones CTA
+//   .hero__image    → ELEMENTO: columna derecha con imagen decorativa
+//
+// Por qué Flexbox aquí (no Grid):
+//   El hero es una distribución en UNA dimensión (dos columnas
+//   lado a lado). Flexbox row con space-between es suficiente
+//   y más semántico que un grid de 2 columnas.
+// ============================================================
+@use 'variables' as v;
+@use 'mixins' as m;
+
+.hero {
+    // Flexbox row: dos columnas lado a lado (content + image)
+    @include m.flex-center(row, space-between, flex-start);
+    width: calc(100% - #{2 * v.$page-gutter});
+    max-width: 1336px;
+    height: 531px;
+    margin: 14px auto 0;
+    padding: 129px 229px 0 113px;
+    background-color: v.$hero-bg;
+    overflow: hidden;
+
+    // ELEMENTO: columna de texto
+    &__content { max-width: 470px; }
+
+    // ELEMENTO: título h1
+    &__title {
+        margin-bottom: 21.5px;
+        font-size: 46px;
+        font-weight: 700;
+        line-height: 1.07;
+        color: v.$hero-title;
+    }
+
+    // ELEMENTO: párrafo de apoyo
+    &__text {
+        max-width: 440px;
+        margin-bottom: 5px;
+        font-size: 14.3px;
+        font-weight: 500;
+        line-height: 1.48;
+        color: v.$hero-text;
+    }
+
+    // ELEMENTO: contenedor de botones — Flexbox row izquierda
+    &__buttons {
+        @include m.flex-center(row, flex-start, center);
+        gap: 36px;
+    }
+
+    // ELEMENTO: imagen decorativa al pie de la sección
+    &__image {
+        align-self: flex-end;
+        img {
+            width: 349px;
+            height: 422px;
+            border-radius: 60px 60px 0 0;
+            box-shadow: 71px 71px 101px rgba(0, 0, 0, 0.46);
+        }
+    }
+}

@@ -1,0 +1,51 @@
+// ============================================================
+// _btn.scss  — BLOQUE: btn
+//
+// BEM en este archivo:
+//   .btn              → BLOQUE  : botón genérico reutilizable
+//   .btn--primary     → MODIFIER: fondo azul sólido
+//   .btn--secondary   → MODIFIER: sin fondo, solo texto + flecha
+//
+// El bloque .btn funciona en cualquier parte de la página;
+// el modificador es lo que cambia su apariencia puntual.
+// ============================================================
+@use 'variables' as v;
+
+.btn {
+    // Estilos base del bloque (comunes a TODOS los modificadores)
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    padding: 0 34px;
+    white-space: nowrap;
+    border: none;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    // MODIFIER --primary: botón de acción principal
+    &--primary {
+        background-color: v.$primary-color;
+        color: v.$white;
+        &:hover { background-color: v.$hero-btn-hover; }
+    }
+
+    // MODIFIER --secondary: enlace estilizado con flecha decorativa
+    &--secondary {
+        background-color: transparent;
+        color: v.$primary-color;
+        padding: 0;
+        &::after {
+            content: '›';
+            margin-left: 8px;
+            font-size: 22px;
+            font-weight: 600;
+            line-height: 0;
+        }
+        &:hover { text-decoration: underline; }
+    }
+}

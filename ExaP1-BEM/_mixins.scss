@@ -1,0 +1,42 @@
+// ============================================================
+// _mixins.scss
+// Mixins reutilizables del proyecto.
+//
+// ¿Qué es un mixin?
+//   Un bloque de CSS parametrizable que se "incluye" con @include.
+//   Evita repetir las mismas propiedades en varios selectores.
+//   Los parámetros ($direction, $color…) hacen que el mismo
+//   mixin produzca variantes sin duplicar código.
+// ============================================================
+
+// ------------------------------------------------------------
+// flex-center
+// Aplica display:flex con dirección, alineación y justify
+// configurables. Valor por defecto: fila centrada en ambos ejes.
+//
+// Uso:
+//   @include flex-center();                          → row center center
+//   @include flex-center(column, flex-start, center) → columna alineada arriba
+//   @include flex-center(row, space-between, center) → fila con espacio entre
+// ------------------------------------------------------------
+@mixin flex-center($direction: row, $justify: center, $align: center) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+// ------------------------------------------------------------
+// outline-icon
+// Convierte el color de texto en transparent y aplica un
+// "stroke" de texto (solo contorno, sin relleno).
+// Se usa para los íconos de Font Awesome en el footer.
+//
+// Uso:
+//   @include outline-icon(#8c8c8c);          → stroke gris 1.5px
+//   @include outline-icon(#38539a, 2px);     → stroke azul 2px
+// ------------------------------------------------------------
+@mixin outline-icon($color, $stroke: 1.5px) {
+    color: transparent;
+    -webkit-text-stroke: $stroke $color;
+}
